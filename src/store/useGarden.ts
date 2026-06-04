@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { Granularity, Point, Project, RawSubtask, Season, Status, Subtask, TimeOfDay, Weather } from '../lib/types';
 import { flatten, isThirsty, nextStatus, plantTypeForCategory, progress } from '../lib/growth';
 import { playBloom, playPlant, playProjectComplete, playWater } from '../lib/sound';
+import { seedProjects } from '../lib/seed';
 
 const uid = () =>
   typeof crypto !== 'undefined' && crypto.randomUUID
@@ -64,6 +65,8 @@ interface GardenState {
   weather: Weather;
   season: Season;
   focusMode: boolean;
+  /** Whether the one-time starter garden has been planted (persisted). */
+  seeded: boolean;
   /** Ids that just changed to done — drives the bloom flourish (transient, not persisted). */
   justBloomed: string[];
   /** Ids just watered — drives the perk-up sparkle (transient, not persisted). */
@@ -94,6 +97,8 @@ interface GardenState {
   setWeather: (w: Weather) => void;
   setSeason: (s: Season) => void;
   setFocusMode: (on: boolean) => void;
+  /** Plant the starter garden for first-time visitors (no-op if they already have data). */
+  loadSeedIfEmpty: () => void;
 }
 
 export const useGarden = create<GardenState>()(
@@ -106,6 +111,7 @@ export const useGarden = create<GardenState>()(
       weather: 'clear',
       season: 'summer',
       focusMode: false,
+      seeded: false,
       justBloomed: [],
       justWatered: [],
 
@@ -252,6 +258,12 @@ export const useGarden = create<GardenState>()(
       setWeather: (weather) => set({ weather }),
       setSeason: (season) => set({ season }),
       setFocusMode: (focusMode) => set({ focusMode }),
+      loadSeedIfEmpty: () => {
+        const s = get();
+        if (!s.seeded && s.projects.length === 0) {
+          set({ projects: seedProjects(), seeded: true });
+        }
+      },
     }),
     {
       name: 'bloom-garden',
@@ -262,6 +274,7 @@ export const useGarden = create<GardenState>()(
         timeOfDay: s.timeOfDay,
         weather: s.weather,
         season: s.season,
+        seeded: s.seeded,
       }),
       // Backfill updatedAt on data saved before the "thirsty" feature existed.
       migrate: (persisted: unknown) => {

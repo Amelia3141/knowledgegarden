@@ -29,8 +29,12 @@ export default function App() {
   const timeOfDay = useGarden((s) => s.timeOfDay);
   const weather = useGarden((s) => s.weather);
   const setFocusMode = useGarden((s) => s.setFocusMode);
+  const loadSeedIfEmpty = useGarden((s) => s.loadSeedIfEmpty);
   const theme = TIME_THEMES[timeOfDay];
   const dark = timeOfDay === 'night' || timeOfDay === 'dusk';
+
+  // First-time visitors get a populated demo garden so they can see what it looks like.
+  useEffect(() => loadSeedIfEmpty(), [loadSeedIfEmpty]);
 
   useEffect(() => setMuted(muted), [muted]);
   useEffect(() => {
