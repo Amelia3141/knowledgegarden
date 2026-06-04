@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Baloo 2', 'Quicksand', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* Drifting pollen motes — soft glowing specks rising through the scene. */
+.mote {
+  position: absolute;
+  bottom: -12px;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #fffdf0 0%, rgba(255, 253, 240, 0.5) 50%, transparent 70%);
+  box-shadow: 0 0 8px 2px rgba(255, 250, 210, 0.55);
+  animation-name: mote-rise;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes mote-rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-46vh) translateX(24px) scale(1);
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-92vh) translateX(-16px) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* ── Sky: twinkling stars + drifting fireflies ── */
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #fffdf0;
+  box-shadow: 0 0 6px 1px rgba(255, 253, 240, 0.9);
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #fdffb6 0%, rgba(200, 255, 120, 0.6) 50%, transparent 70%);
+  box-shadow: 0 0 10px 3px rgba(210, 255, 130, 0.7);
+  animation-name: firefly-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes firefly-drift {
+  0% { transform: translate(0, 0) scale(0.7); opacity: 0; }
+  20% { opacity: 1; }
+  50% { transform: translate(40px, -36px) scale(1); opacity: 0.9; }
+  80% { opacity: 0.7; }
+  100% { transform: translate(-24px, -64px) scale(0.6); opacity: 0; }
+}
+
+/* ── Weather ── */
+.raindrop {
+  position: absolute;
+  top: -14%;
+  width: 2px;
+  height: 56px;
+  border-radius: 2px;
+  background: linear-gradient(rgba(200, 224, 255, 0), rgba(180, 210, 245, 0.75));
+  animation-name: rain-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes rain-fall {
+  0% { transform: translateY(-20vh); }
+  100% { transform: translateY(120vh); }
+}
+.snowflake {
+  position: absolute;
+  top: -6%;
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes snow-fall {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+  15% { opacity: 0.95; }
+  100% { transform: translateY(115vh) translateX(30px) rotate(180deg); opacity: 0.6; }
+}
+.petal {
+  position: absolute;
+  top: -6%;
+  width: 11px;
+  height: 8px;
+  border-radius: 60% 40% 60% 40% / 50% 60% 40% 50%;
+  animation-name: petal-fall;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes petal-fall {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+  12% { opacity: 0.95; }
+  100% { transform: translateY(115vh) translateX(70px) rotate(360deg); opacity: 0.5; }
+}
+
+/* Drifting ground mist (dusk / night). */
+.fogband {
+  position: absolute;
+  left: -30%;
+  width: 160%;
+  border-radius: 9999px;
+  filter: blur(16px);
+  animation-name: fog-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes fog-drift {
+  0%, 100% { transform: translateX(-5%); }
+  50% { transform: translateX(8%); }
+}
+
+/* Soft god-rays fanning from the sun. */
+.godrays {
+  position: absolute;
+  background: repeating-conic-gradient(
+    from 198deg at 100% 0%,
+    rgba(255, 250, 214, 0) 0deg,
+    rgba(255, 250, 214, 0.1) 3deg,
+    rgba(255, 250, 214, 0) 7deg
+  );
+  -webkit-mask-image: radial-gradient(62% 62% at 100% 0%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(62% 62% at 100% 0%, #000 0%, transparent 72%);
+  animation: rays-shimmer 16s ease-in-out infinite;
+  transform-origin: 100% 0%;
+}
+@keyframes rays-shimmer {
+  0%, 100% { opacity: 0.45; transform: rotate(-2deg); }
+  50% { opacity: 0.85; transform: rotate(2deg); }
+}
+
+/* Gentle grass sway for ambient ground tufts. */
+.sway {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: sway 5s ease-in-out infinite;
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50% { transform: rotate(3.5deg); }
+}
+
+/* Subtle wood-grain + soft shading for the cozy panels (kept very light). */
+.woodgrain {
+  background-image:
+    repeating-linear-gradient(94deg, rgba(150, 110, 70, 0.035) 0px, rgba(150, 110, 70, 0.035) 1px, transparent 1px, transparent 8px),
+    repeating-linear-gradient(91deg, rgba(120, 90, 60, 0.022) 0px, rgba(120, 90, 60, 0.022) 2px, transparent 2px, transparent 15px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 22%, transparent 80%, rgba(120, 100, 80, 0.05) 100%);
+}
+
+/* Autumn leaves tumbling down. */
+.leaf-fall {
+  position: absolute;
+  top: -6%;
+  width: 12px;
+  height: 9px;
+  border-radius: 0 70% 0 70%;
+  animation-name: leaf-fall;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes leaf-fall {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+  12% { opacity: 0.95; }
+  100% { transform: translateY(115vh) translateX(90px) rotate(540deg); opacity: 0.55; }
+}
+
+/* Chunkier, friendlier range slider to match the pastel vibe */
+input[type='range'] {
+  height: 10px;
+  border-radius: 9999px;
+  background: #eadfce;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 9999px;
+  background: #6cc28a;
+  border: 3px solid #fff7ec;
+  box-shadow: 0 2px 6px rgba(120, 100, 80, 0.3);
+  cursor: pointer;
+}
