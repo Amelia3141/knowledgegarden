@@ -210,25 +210,7 @@ export default function Garden() {
           <rect x={-600} y={-600} width={FIELD.w + 1200} height={FIELD.h + 1200} fill={seasonTheme.ground} />
         )}
 
-        {/* project trees behind plants */}
-        {projects.map((p) => {
-          const pos = positions.get(p.id);
-          if (!pos) return null;
-          return (
-            <ProjectTree
-              key={p.id}
-              project={p}
-              x={pos.x}
-              y={pos.y}
-              selected={selection?.kind === 'project' && selection.id === p.id}
-              light={theme.light}
-              season={seasonTheme}
-              onClick={() => select({ kind: 'project', id: p.id })}
-            />
-          );
-        })}
-
-        {/* every subtask plant */}
+        {/* every subtask plant (behind the project tree) */}
         {allSubtasks.map((s) => {
           const pos = positions.get(s.id);
           if (!pos) return null;
@@ -247,6 +229,24 @@ export default function Garden() {
                 cycle(s.id);
               }}
               onDrag={(id, p) => setPosition(id, p)}
+            />
+          );
+        })}
+
+        {/* project trees in front of their sprouts so the tree always reads as the centrepiece */}
+        {projects.map((p) => {
+          const pos = positions.get(p.id);
+          if (!pos) return null;
+          return (
+            <ProjectTree
+              key={p.id}
+              project={p}
+              x={pos.x}
+              y={pos.y}
+              selected={selection?.kind === 'project' && selection.id === p.id}
+              light={theme.light}
+              season={seasonTheme}
+              onClick={() => select({ kind: 'project', id: p.id })}
             />
           );
         })}
